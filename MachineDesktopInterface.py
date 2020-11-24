@@ -28,68 +28,72 @@ with mss() as sct:
                 if i not in self.KEYBOARD_KEYS and i not in self.MOUSE_BUTTONS and i not in self.MOUSE_POSITION:
                     raise Exception("Invalid key or button was supplied to observedKeys")
         
+        ### Get Direct Access to the Mouse Interface
         def getMouse(self):
+            """Get Direct Access to the Mouse Interface"""
             return self.mouse
         
+        ### Get Direct Access to the Keyboard Interface
         def getKeyboard(self):
+            """Get Direct Access to the Keyboard Interface"""
             return self.keyboard
 
+        ### Change which keys are being observed or the order they are being observed in
         def changeObservedKeys(self, observedKeys=None):
+            """Change which keys are being observed or the order they are being observed in"""
             if(observedKeys == None):
                 observedKeys = []
             self.observedKeys = observedKeys
 
-        def changeState(self, keyValues, x, y):
-            if(len(keyValues) != len(self.observedKeys)):
-                raise Exception("The length of passed in keys does not match the length of observed keys.")
-            for (value, key) in (keyValues, self.observedKeys):
-                if key in self.KEYBOARD_KEYS:
-                    if value:
-                        self.keyboard.holdKey(key)
-                    else:
-                        self.keyboard.releaseKey(key)
-                elif key in self.MOUSE_BUTTONS:
-                    if value:
-                        self.mouse.holdClick(x, y, key)
-                    else:
-                        self.mouse.releaseClick(x, y, key)
-
+        ### Change the window which is being observed
         def setWindowTitle(self, newTitle):
+            """Change the window which is being observed"""
             self.windowTitle = newTitle
-            
+            self.activateWindow()
+        
+        ### Open and focus on a window
         def activateWindow(self):
+            """Open and focus on a window"""
             window = None
             try:
                 window = gw.getWindowsWithTitle(self.windowTitle)[0]
             except IndexError:
                 raise Exception("The window with title " + self.windowTitle + " does not exist")
+            window.restore()
+            window.maximize()
             window.activate()
+            window.resizeTo(self.width, self.height)
+            window.moveTo(0,0)
+            self.width = window.width
+            self.height = window.height
         
+        ### Change the monitor that is being used
         def changeMonitor(self, monitor_number):
+            """Change the monitor that is being used"""
             self.monitor_number = monitor_number
         
+        ### Change the application window size
         def changeWindowSize(self, newWidth, newHeight):
-            window = None
-            try:
-                window = gw.getWindowsWithTitle(self.windowTitle)[0]
-            except IndexError:
-                raise Exception("The window with title " + self.windowTitle + " does not exist")
-            window.activate()
-            window.resizeTo(newWidth, newHeight)
-            window.moveTo(0,0)
+            """Change the application window size"""
             self.width = newWidth
             self.height = newHeight
+            self.activateWindow()
 
+        ### Update the capture zone -- changes the monitored area to allow for cropping
         def updateScreenCaptureZone(self):
+            """Update the capture zone -- changes the monitored area to allow for cropping"""
             window = None
             try:
                 window = gw.getWindowsWithTitle(self.windowTitle)[0]
             except IndexError:
                 raise Exception("The window with title " + self.windowTitle + " does not exist")
             mon = sct.monitors(self.monitor_number)
-            self.monitor = {mon["top"]: window.top, mon["left"]: window.left + 10, "width": window.width - 20, "height": window.height - 10, "mon": self.monitor_number}
+            self.monitor = {'top': mon["top"] + window.top, 'left': mon["left"] + window.left + 10, "width": window.width - 20, "height": window.height - 10, "mon": self.monitor_number}
 
+        ### Get a generator that returns a numpy array of screen captures of the application
         def getScreenOutputModel(self, width = None, height = None):
+            """Get a generator that returns a numpy array of screen captures of the application.\n
+            \nCalling next on the generator while the application window is not visible will render the generator inert -- stopIteration will be thrown."""
             with mss() as sct:
                 window = None
                 try:
@@ -120,13 +124,15 @@ with mss() as sct:
                     else:
                         return
         
-        #provide an array of booleans and numbers matching the length and order of observed keys
-        def interpretAction(self, activeKeys):
-            if len(activeKeys) != len(self.observedKeys):
+        ### Provide an array of booleans and numbers matching the length and order of observed keys, and perform actions according to the action values supplied
+        def interpretAction(self, actionValues):
+            """Provide an array of action values matching the length and order of observed keys, and perform actions according to the action values supplied.\n
+            \nIf the observedKeys list is ['w', 'a', 's', 'd'], then supplying a list of action values [False, False, True, False] to this method will press the 's' key."""
+            if len(actionValues) != len(self.observedKeys):
                 raise Exception("Active key array mismatch: provide an array of booleans and numbers matching the length and order of observed keys")
-            for i in range(len(activeKeys)):
+            for i in range(len(actionValues)):
                 if self.observedKeys[i] in self.KEYBOARD_KEYS:
-                    if activeKeys[i]:
+                    if actionValues[i]:
                         if self.keyboard.getState()[self.observedKeys[i]] != True:
                             self.keyboard.holdKey(self.observedKeys[i])
                     else:
@@ -140,15 +146,15 @@ with mss() as sct:
                         raise Exception("The window with title " + self.windowTitle + " does not exist")
                     try:
                         index = self.observedKeys.index('Should_Move_Mouse')
-                        if activeKeys[index] == True:
+                        if actionValues[index] == True:
                             if self.observedKeys[i] == 'Move_To_Mouse_X':
-                                self.x = activeKeys[i]
+                                self.x = actionValues[i]
                             elif self.observedKeys[i] == 'Mouse_Offset_X':
-                                self.x = self.x + activeKeys[i]
+                                self.x = self.x + actionValues[i]
                             elif self.observedKeys[i] == 'Move_To_Mouse_Y':
-                                self.y = activeKeys[i]
+                                self.y = actionValues[i]
                             elif self.observedKeys[i] == 'Mouse_Offset_Y':
-                                self.y = self.y + activeKeys[i]
+                                self.y = self.y + actionValues[i]
                             
                             if self.x > 1.0:
                                 self.x = 1.0
@@ -165,7 +171,7 @@ with mss() as sct:
                         pass
 
                     if self.observedKeys[i] in self.MOUSE_BUTTONS:
-                        if activeKeys[i]:
+                        if actionValues[i]:
                             self.mouse.singleClick(self.x + window.left, self.y + window.top, button=self.observedKeys[i])
                         else:
                             self.mouse.releaseClick(self.x + window.left, self.y + window.top, self.observedKeys[i])
