@@ -2,9 +2,7 @@
 
 A tool to turn ML outputs into meaningful actions within windowed desktop applications on Windows or Mac machines.
 
-The setup is shown below:
-
-1. Open the application you want to interact with and, if possible, place it in windowed mode. The smaller form will speed up MSS code (which supplies screen data as input, for example, to a neural network).
+Open the application you want to interact with and, if possible, place it in windowed mode. The smaller form will speed up MSS code (which supplies screen data as input, for example, to a neural network).
 
 ### EXAMPLE:
 
