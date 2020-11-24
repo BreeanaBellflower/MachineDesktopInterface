@@ -2,14 +2,13 @@
 
 A tool to turn ML outputs into meaningful actions within windowed desktop applications on Windows or Mac machines.
 
-The setup is shown below:
-
-1. Open the application you want to interact with and, if possible, place it in windowed mode. The smaller form will speed up MSS code (which supplies screen data as input, for example, to a neural network).
+Open the application you want to interact with and, if possible, place it in windowed mode. The smaller form will speed up MSS code (which supplies screen data as input, for example, to a neural network).
 
 ### EXAMPLE:
 
 > mdi = MachineDesktopInterface('my application name', ['w', 'a', 's', 'd'])  
-> while True:  
+> while True:
+> &nbsp;&nbsp;&nbsp;&nbsp; \#get a generator that will provide screen captures of the application -- this also initializes and resizes the application to 800x600    
 > &nbsp;&nbsp;&nbsp;&nbsp; screenOutput = getScreenOutputModel(800, 600)  
 > &nbsp;&nbsp;&nbsp;&nbsp; screenCapture = next(screenOutput)  
 > &nbsp;&nbsp;&nbsp;&nbsp; \#input screen capture's numpy data as input to a neural network, get 4 outputs  
@@ -54,4 +53,4 @@ Likewise, the Mouse_Offset keys take the current position and apply an offset. I
 ##### Getting feedback after taking actions
 Once you take actions with the MDI, the state of the application you are working with should change. For example, in a game you might expect to see a character move. As a gamer you would implicitly take that as feedback that pressing a certain button moved your character. For many reinforcement learning applications, that same feedback is required in order for the machine to learn how to play. The Machine Desktop Interface returns a generator in the getScreenOutputModel method, which you can use to generate numpy arrays representing one frame of the application.  
   
-Note that the machine will see what you see -- if another application blocks your application, that will be captured. If the window of your application is no longer visible, or is minimized, subsequent calls to the generator will yield no results.
+Note that the machine will see what you see -- if another application blocks your application, that will be captured. If the window of your application is no longer visible, or is minimized, subsequent calls to the generator will yield no results. And in fact, minimizing an application is an easy way to cancel actions from the MDI.
