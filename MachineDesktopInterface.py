@@ -15,6 +15,7 @@ with mss() as sct:
             self.KEYBOARD_KEYS = pyautogui.KEYBOARD_KEYS
             self.MOUSE_BUTTONS = [ pyautogui.PRIMARY, pyautogui.MIDDLE, pyautogui.SECONDARY ]
             self.MOUSE_POSITION = [ 'Should_Move_Mouse', 'Move_To_Mouse_X', 'Move_To_Mouse_Y', 'Mouse_Offset_X', 'Mouse_Offset_Y' ]
+            print([*self.KEYBOARD_KEYS, *self.MOUSE_BUTTONS, *self.MOUSE_POSITION])
             self.keyboard = KeyboardInterface()
             self.mouse = MouseInterface()
             self.observedKeys = observedKeys
@@ -57,6 +58,7 @@ with mss() as sct:
             self.windowTitle = newTitle
             
         def activateWindow(self):
+            window = None
             try:
                 window = gw.getWindowsWithTitle(self.windowTitle)[0]
             except IndexError:
@@ -67,6 +69,7 @@ with mss() as sct:
             self.monitor_number = monitor_number
         
         def changeWindowSize(self, newWidth, newHeight):
+            window = None
             try:
                 window = gw.getWindowsWithTitle(self.windowTitle)[0]
             except IndexError:
@@ -78,6 +81,7 @@ with mss() as sct:
             self.height = newHeight
 
         def updateScreenCaptureZone(self):
+            window = None
             try:
                 window = gw.getWindowsWithTitle(self.windowTitle)[0]
             except IndexError:
@@ -87,6 +91,7 @@ with mss() as sct:
 
         def getScreenOutputModel(self, width = None, height = None):
             with mss() as sct:
+                window = None
                 try:
                     window = gw.getWindowsWithTitle(self.windowTitle)[0]
                 except IndexError:
@@ -113,7 +118,7 @@ with mss() as sct:
                     if window.visible:
                         yield numpy.array(sct.grab(self.monitor))
                     else:
-                        yield False
+                        return
         
         #provide an array of booleans and numbers matching the length and order of observed keys
         def interpretAction(self, activeKeys):
@@ -128,6 +133,11 @@ with mss() as sct:
                         if self.keyboard.getState()[self.observedKeys[i]] == True:
                             self.keyboard.releaseKey(self.observedKeys[i])
                 else:
+                    window = None
+                    try:
+                        window = gw.getWindowsWithTitle(self.windowTitle)[0]
+                    except IndexError:
+                        raise Exception("The window with title " + self.windowTitle + " does not exist")
                     try:
                         index = self.observedKeys.index('Should_Move_Mouse')
                         if activeKeys[index] == True:
@@ -139,12 +149,23 @@ with mss() as sct:
                                 self.y = activeKeys[i]
                             elif self.observedKeys[i] == 'Mouse_Offset_Y':
                                 self.y = self.y + activeKeys[i]
-                            self.mouse.moveTo(self.x, self.y)
+                            
+                            if self.x > 1.0:
+                                self.x = 1.0
+                            if self.x < 0.0:
+                                self.x = 0.0
+
+                            if self.y > 1.0:
+                                self.y = 1.0
+                            if self.y < 0.0:
+                                self.y = 0.0
+
+                            self.mouse.moveTo(self.x * self.width + window.left, self.y * self.height + window.top)
                     except ValueError:
                         pass
 
                     if self.observedKeys[i] in self.MOUSE_BUTTONS:
                         if activeKeys[i]:
-                            self.mouse.singleClick(self.x, self.y, button=self.observedKeys[i])
+                            self.mouse.singleClick(self.x + window.left, self.y + window.top, button=self.observedKeys[i])
                         else:
-                            self.mouse.releaseClick(self.x, self.y, self.observedKeys[i])
+                            self.mouse.releaseClick(self.x + window.left, self.y + window.top, self.observedKeys[i])
