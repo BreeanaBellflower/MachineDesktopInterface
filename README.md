@@ -8,8 +8,7 @@ The setup is shown below:
 
 EXAMPLE:
 
-mdi = MachineDesktopInterface('my application name', ['w', 'a', 's', 'd'])
-
+> mdi = MachineDesktopInterface('my application name', ['w', 'a', 's', 'd'])
 > while True:  
 > &nbsp;&nbsp;&nbsp;&nbsp; screenOutput = getScreenOutputModel(800, 600)  
 > &nbsp;&nbsp;&nbsp;&nbsp; screenCapture = next(screenOutput)  
