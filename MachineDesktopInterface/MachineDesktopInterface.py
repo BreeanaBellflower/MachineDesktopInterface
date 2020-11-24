@@ -13,7 +13,6 @@ with mss() as sct:
             self.KEYBOARD_KEYS = pyautogui.KEYBOARD_KEYS
             self.MOUSE_BUTTONS = [ pyautogui.PRIMARY, pyautogui.MIDDLE, pyautogui.SECONDARY ]
             self.MOUSE_POSITION = [ 'Should_Move_Mouse', 'Move_To_Mouse_X', 'Move_To_Mouse_Y', 'Mouse_Offset_X', 'Mouse_Offset_Y' ]
-            print([*self.KEYBOARD_KEYS, *self.MOUSE_BUTTONS, *self.MOUSE_POSITION])
             self.keyboard = KeyboardInterface()
             self.mouse = MouseInterface()
             self.observedKeys = observedKeys
