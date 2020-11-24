@@ -1,5 +1,5 @@
-from .smallInterfaces import KeyboardInterface as ki
-from .smallInterfaces import MouseInterface as mi
+import KeyboardInterface as ki
+import MouseInterface as mi
 import pygetwindow as gw
 import pyautogui
 import numpy
