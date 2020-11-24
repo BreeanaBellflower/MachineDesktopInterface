@@ -7,7 +7,8 @@ Open the application you want to interact with and, if possible, place it in win
 ### EXAMPLE:
 
 > mdi = MachineDesktopInterface('my application name', ['w', 'a', 's', 'd'])  
-> while True:  
+> while True:
+> &nbsp;&nbsp;&nbsp;&nbsp; \#get a generator that will provide screen captures of the application -- this also initializes and resizes the application to 800x600    
 > &nbsp;&nbsp;&nbsp;&nbsp; screenOutput = getScreenOutputModel(800, 600)  
 > &nbsp;&nbsp;&nbsp;&nbsp; screenCapture = next(screenOutput)  
 > &nbsp;&nbsp;&nbsp;&nbsp; \#input screen capture's numpy data as input to a neural network, get 4 outputs  
