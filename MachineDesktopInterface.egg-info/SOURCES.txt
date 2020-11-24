@@ -1,8 +1,6 @@
 README.md
 setup.py
-MachineDesktopInterface/KeyboardInterface.py
 MachineDesktopInterface/MachineDesktopInterface.py
-MachineDesktopInterface/MouseInterface.py
 MachineDesktopInterface/__init__.py
 MachineDesktopInterface.egg-info/PKG-INFO
 MachineDesktopInterface.egg-info/SOURCES.txt

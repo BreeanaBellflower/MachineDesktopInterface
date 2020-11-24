@@ -1,5 +1,3 @@
-import KeyboardInterface as ki
-import MouseInterface as mi
 import pygetwindow as gw
 import pyautogui
 import numpy
@@ -16,8 +14,8 @@ with mss() as sct:
             self.MOUSE_BUTTONS = [ pyautogui.PRIMARY, pyautogui.MIDDLE, pyautogui.SECONDARY ]
             self.MOUSE_POSITION = [ 'Should_Move_Mouse', 'Move_To_Mouse_X', 'Move_To_Mouse_Y', 'Mouse_Offset_X', 'Mouse_Offset_Y' ]
             print([*self.KEYBOARD_KEYS, *self.MOUSE_BUTTONS, *self.MOUSE_POSITION])
-            self.keyboard = ki.KeyboardInterface()
-            self.mouse = mi.MouseInterface()
+            self.keyboard = KeyboardInterface()
+            self.mouse = MouseInterface()
             self.observedKeys = observedKeys
             self.x = 0
             self.y = 0
@@ -176,8 +174,67 @@ with mss() as sct:
                         else:
                             self.mouse.releaseClick(self.x + window.left, self.y + window.top, self.observedKeys[i])
 
-def _test():
-    assert 1 + 1 == 2
+class KeyboardInterface:
+    def __init__(self):
+        self.keyState = { key: False for key in pyautogui.KEYBOARD_KEYS }
 
-if __name__ == '__main__':
-    _test()
+    def pressKey(self, key):
+        pyautogui.press(key)
+        return self.keyState
+    
+    def holdKey(self, key):
+        pyautogui.keyDown(key)
+        self.keyState[key] = True
+        return self.keyState
+    
+    def releaseKey(self, key):
+        pyautogui.keyUp(key)
+        self.keyState[key] = False
+        return self.keyState
+    
+    def releaseAllKeys(self):
+        for key in pyautogui.KEYBOARD_KEYS:
+            pyautogui.keyUp(key)
+        self.keyState = { key: False for key in pyautogui.KEYBOARD_KEYS }
+        return self.keyState
+    
+    def write(self, message, interval=0.0):
+        pyautogui.write(message, interval=interval)
+        return self.keyState
+    
+    def getState(self):
+        return self.keyState
+
+class MouseInterface:
+    def __init__(self):
+        self.mouseState = {
+            pyautogui.PRIMARY: False,
+            pyautogui.MIDDLE: False,
+            pyautogui.SECONDARY: False
+        }
+
+    def singleClick(self, x, y, button=pyautogui.PRIMARY, duration=0.0):
+        pyautogui.click(x, y, button=button, duration=duration)
+        return self.mouseState
+
+    def doubleClick(self, x, y, button=pyautogui.PRIMARY, duration=0.0):
+        pyautogui.doubleClick(x, y, button=button, duration=duration)
+        return self.mouseState
+
+    def tripleClick(self, x, y, button=pyautogui.PRIMARY, duration=0.0):
+        pyautogui.tripleClick(x, y, button=button, duration=duration)
+        return self.mouseState
+    
+    def holdClick(self, x, y, button=pyautogui.PRIMARY, duration=0.0):
+        pyautogui.mouseDown(x, y, button=button, duration=duration)
+        self.mouseState[button] = True
+        return self.mouseState
+    
+    def releaseClick(self, x, y, button=pyautogui.PRIMARY, duration=0.0):
+        pyautogui.mouseUp(x, y, button=button, duration=duration)
+        self.mouseState[button] = False
+        return self.mouseState
+
+    def moveTo(self, x, y):
+        pyautogui.moveTo(x, y)
+        return self.mouseState
