@@ -7,6 +7,8 @@ import pygetwindow as gw
 import numpy
 import time as tm
 import math
+from matplotlib import pyplot as plt
+from PIL import Image, ImageDraw, ImageOps
 from MachineDesktopInterface import MachineDesktopInterface
 screenWidth, screenHeight = pyautogui.size() # Returns two integers, the width and height of the screen. (The primary monitor, in multi-monitor setups.)
 
@@ -25,22 +27,24 @@ keyState = { key: False for key in pyautogui.KEYBOARD_KEYS }
 # pyautogui.write(['left', 'left', 'left', 'left', 'left', 'left'])
 # pyautogui.keyUp('shift')
 # pyautogui.hotkey('ctrl', 'c')
-window = gw.getWindowsWithTitle('Microsoft Store')[0]
-window.activate()
-window.moveTo(0,0)
+mdi = MachineDesktopInterface('Poly Bridge 2', [ 'w', 'a', 's', 'd', 'Should_Move_Mouse', 'Move_To_Mouse_X', pyautogui.PRIMARY])
+screenOutput = mdi.getScreenOutputModel()
 
-mdi = MachineDesktopInterface('Snipping', 800, 600, [ 'w', 'a', 's', 'd', 'Should_Move_Mouse', 'Move_To_Mouse_X', pyautogui.PRIMARY])
-
-while True:
+i = 0
+while i < 1:
     time = datetime.now()
     formatted_time = time.strftime('%S%f')
     formatted_time = int(formatted_time[0:2])
     x = 600 + 200 * math.cos(60 * int(formatted_time) * math.pi / 180)
     # y = 10 #600 + 200 * math.sin(60 * int(formatted_time) * math.pi / 180)
     active = [False, False, False, False, False, x, True]
-
-    mdi.interpretAction(active)
+    o = next(screenOutput)
+    print(o)
+    # plt.imshow(o, cmap='gray')
+    # plt.show()
+    #mdi.interpretAction(active)
     tm.sleep(1)
+    i += 1
 # with mss() as sct:
 #     # capture the first image
 #     screenWidth, screenHeight = pyautogui.size()
