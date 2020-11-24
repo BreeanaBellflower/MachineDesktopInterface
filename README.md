@@ -10,11 +10,11 @@ EXAMPLE:
 
 mdi = MachineDesktopInterface('my application name', ['w', 'a', 's', 'd'])
 
-while True:
-    screenOutput = getScreenOutputModel(800, 600)
-    screenCapture = next(screenOutput)
-    \#input screen capture's numpy data as input to a neural network, get 4 outputs
-    \#output = [0.2, 0.3, 0.9, 0.3]
-    \#transform your list into a list of booleans and floats according to the type of input
-    \#interfaceInput = [False, False, True, False]
-    mdi.interpretAction(interfaceInput)
+> while True:  
+> &nbsp;&nbsp;&nbsp;&nbsp; screenOutput = getScreenOutputModel(800, 600)  
+> &nbsp;&nbsp;&nbsp;&nbsp; screenCapture = next(screenOutput)  
+> &nbsp;&nbsp;&nbsp;&nbsp; \#input screen capture's numpy data as input to a neural network, get 4 outputs  
+> &nbsp;&nbsp;&nbsp;&nbsp; \#output = [0.2, 0.3, 0.9, 0.3]  
+> &nbsp;&nbsp;&nbsp;&nbsp; \#transform your list into a list of booleans and floats according to the type of input  
+> &nbsp;&nbsp;&nbsp;&nbsp; \#interfaceInput = [False, False, True, False]  
+> &nbsp;&nbsp;&nbsp;&nbsp; mdi.interpretAction(interfaceInput)  
