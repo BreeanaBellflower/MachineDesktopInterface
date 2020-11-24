@@ -33,3 +33,9 @@ class MouseInterface:
     def moveTo(self, x, y):
         pyautogui.moveTo(x, y)
         return self.mouseState
+
+def _test():
+    assert 1 + 1 == 2
+
+if __name__ == '__main__':
+    _test()

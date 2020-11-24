@@ -1,5 +1,5 @@
-from MouseInterface import MouseInterface
-from KeyboardInterface import KeyboardInterface
+from smallInterfaces import KeyboardInterface as ki
+from smallInterfaces import MouseInterface as mi
 import pygetwindow as gw
 import pyautogui
 import numpy
@@ -16,8 +16,8 @@ with mss() as sct:
             self.MOUSE_BUTTONS = [ pyautogui.PRIMARY, pyautogui.MIDDLE, pyautogui.SECONDARY ]
             self.MOUSE_POSITION = [ 'Should_Move_Mouse', 'Move_To_Mouse_X', 'Move_To_Mouse_Y', 'Mouse_Offset_X', 'Mouse_Offset_Y' ]
             print([*self.KEYBOARD_KEYS, *self.MOUSE_BUTTONS, *self.MOUSE_POSITION])
-            self.keyboard = KeyboardInterface()
-            self.mouse = MouseInterface()
+            self.keyboard = ki.KeyboardInterface()
+            self.mouse = mi.MouseInterface()
             self.observedKeys = observedKeys
             self.x = 0
             self.y = 0
@@ -60,7 +60,7 @@ with mss() as sct:
             except IndexError:
                 raise Exception("The window with title " + self.windowTitle + " does not exist")
             window.restore()
-            window.maximize()
+            window.show()
             window.activate()
             window.resizeTo(self.width, self.height)
             window.moveTo(0,0)
@@ -101,7 +101,7 @@ with mss() as sct:
                 except IndexError:
                     raise Exception("The window with title " + self.windowTitle + " does not exist")
                 window.restore()
-                window.maximize()
+                window.show()
                 window.activate()
                 if(width != None and height != None):
                     window.resizeTo(width, height)
@@ -175,3 +175,9 @@ with mss() as sct:
                             self.mouse.singleClick(self.x + window.left, self.y + window.top, button=self.observedKeys[i])
                         else:
                             self.mouse.releaseClick(self.x + window.left, self.y + window.top, self.observedKeys[i])
+
+def _test():
+    assert 1 + 1 == 2
+
+if __name__ == '__main__':
+    _test()
