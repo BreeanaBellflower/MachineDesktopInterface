@@ -1,0 +1,4 @@
+mss
+numpy
+pyautogui
+pygetwindow
