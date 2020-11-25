@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="mdi",
-    version="0.2.8",
+    name="MachineDesktopInterface",
+    version="0.2.9",
     author="Breeana Proffit",
     author_email="author@example.com",
     description="A tool to allow machine learning developers to interact with applications on their comptuers",
