@@ -6,7 +6,7 @@ import numpy
 from mss import mss
 
 with mss() as sct:
-    class MachineDesktopInterface:
+    class MDI:
         def __init__(self, windowTitle, observedKeys=None, monitor_number = 1, windowLeftOffset = 10, windowTopOffset = 0, windowWidthOffset = -20, windowHeightOffset = -10):
             if(observedKeys == None):
                 observedKeys = []
