@@ -1,5 +1,5 @@
-from .Interfaces.KeyboardInterface import KeyboardInterface
-from .Interfaces.MouseInterface import MouseInterface
+from Interfaces.KeyboardInterface import KeyboardInterface
+from Interfaces.MouseInterface import MouseInterface
 import pygetwindow as gw
 import pyautogui
 import numpy
