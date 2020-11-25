@@ -1,0 +1,10 @@
+README.md
+setup.py
+Interfaces/KeyboardInterface.py
+Interfaces/MouseInterface.py
+Interfaces/__init__.py
+MachineDesktopInterface.egg-info/PKG-INFO
+MachineDesktopInterface.egg-info/SOURCES.txt
+MachineDesktopInterface.egg-info/dependency_links.txt
+MachineDesktopInterface.egg-info/requires.txt
+MachineDesktopInterface.egg-info/top_level.txt
