@@ -1,5 +1,5 @@
-from . import KeyboardInterface
-from . import MouseInterface
+from .Interfaces.KeyboardInterface import KeyboardInterface
+from .Interfaces.MouseInterface import MouseInterface
 import pygetwindow as gw
 import pyautogui
 import numpy
@@ -15,8 +15,8 @@ with mss() as sct:
             self.KEYBOARD_KEYS = pyautogui.KEYBOARD_KEYS
             self.MOUSE_BUTTONS = [ pyautogui.PRIMARY, pyautogui.MIDDLE, pyautogui.SECONDARY ]
             self.MOUSE_POSITION = [ 'Should_Move_Mouse', 'Move_To_Mouse_X', 'Move_To_Mouse_Y', 'Mouse_Offset_X', 'Mouse_Offset_Y' ]
-            self.keyboard = KeyboardInterface.KeyboardInterface()
-            self.mouse = MouseInterface.MouseInterface()
+            self.keyboard = KeyboardInterface()
+            self.mouse = MouseInterface()
             self.observedKeys = observedKeys
             self.x = 0
             self.y = 0

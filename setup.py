@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="MachineDesktopInterface", # Replace with your own username
-    version="0.2.3",
+    version="0.2.4",
     author="Breeana Proffit",
     author_email="author@example.com",
     description="A tool to allow machine learning developers to interact with applications on their comptuers",
