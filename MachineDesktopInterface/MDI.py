@@ -1,5 +1,6 @@
 from Interfaces.KeyboardInterface import KeyboardInterface
 from Interfaces.MouseInterface import MouseInterface
+from PIL import Image
 import pygetwindow as gw
 import pyautogui
 import numpy
@@ -119,7 +120,11 @@ with mss() as sct:
 
                 while True:
                     if window.visible:
-                        yield numpy.array(sct.grab(self.monitor))
+                        npimg = numpy.array(sct.grab(self.monitor))
+                        npimg = Image.fromarray(npimg, mode="RGBA")
+                        b, g, r, a = npimg.split()
+                        npimg = Image.merge("RGBA", (r, g, b, a))
+                        return numpy.asarray(npimg)
                     else:
                         return
         
