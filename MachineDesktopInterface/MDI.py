@@ -124,7 +124,7 @@ with mss() as sct:
                         npimg = Image.fromarray(npimg, mode="RGBA")
                         b, g, r, a = npimg.split()
                         npimg = Image.merge("RGBA", (r, g, b, a))
-                        return numpy.asarray(npimg)
+                        yield numpy.asarray(npimg)
                     else:
                         return
         
