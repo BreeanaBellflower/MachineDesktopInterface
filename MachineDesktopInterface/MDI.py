@@ -138,7 +138,7 @@ with mss() as sct:
                 if self.observedKeys[i] in self.KEYBOARD_KEYS:
                     if actionValues[i]:
                         if self.keyboard.getState()[self.observedKeys[i]] != True:
-                            self.keyboard.holdKey(self.observedKeys[i])
+                            self.keyboard.pressKey(self.observedKeys[i])
                     else:
                         if self.keyboard.getState()[self.observedKeys[i]] == True:
                             self.keyboard.releaseKey(self.observedKeys[i])
